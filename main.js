@@ -327,7 +327,7 @@ cartBtn.addEventListener('click', () => {
 
     </div> 
     `;
-
+    console.log(cart);
     cart.forEach ( product => {
 
       const cartContainer = document.querySelector('.cart-container');
@@ -338,7 +338,8 @@ cartBtn.addEventListener('click', () => {
             <img src="./img/product-test.png" alt="Product">
             <div class="item-details">
                 <div class="item-name">${product.name}</div>
-                <div class="item-price">$${product.price}</div>
+                <div class="item-price">$${product.price * product.quantity}</div>
+                <div class="item-price">${product.quantity}</div>
             </div>
         </div>
       `;
