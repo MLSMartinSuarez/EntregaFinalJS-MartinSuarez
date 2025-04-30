@@ -1,74 +1,86 @@
 [ 
     {
+        "id": 1,
         "name": "Sabana 1",
-        "price": "200",
+        "price": 200,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bedroom"
 
     },
     {
+        "id": 2,
         "name": "Sabana 2",
-        "price": "400",
+        "price": 400,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bedroom"
     },
     {
+        "id": 3,
         "name": "Sabana 3",
-        "price": "500",
+        "price": 500,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bedroom"
     },
     {
+        "id": 4,
         "name": "repasador 1",
-        "price": "50",
+        "price": 50,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Kitchen"
     },
     {
+        "id": 5,
         "name": "repasador 2",
-        "price": "150",
+        "price": 150,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Kitchen"
     },
     {
+        "id": 6,
         "name": "repasador 3",
-        "price": "250",
+        "price": 250,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Kitchen"
     },
     {
+        "id": 7,
         "name": "Bathroom 1",
-        "price": "50",
+        "price": 50,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bathroom"
     },
     {
+        "id": 8,
         "name": "Bathroom 2",
-        "price": "50",
+        "price": 50,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bathroom"
     },
     {
+        "id": 9,
         "name": "Bathroom 3",
-        "price": "50",
+        "price": 50,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Bathroom"
     },
     {
+        "id": 10,
         "name": "Decoratives 1",
-        "price": "50",
+        "price": 50,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Decoratives"
     },
     {
-        "name": "Decoratives 1",
-        "price": "50",
+        "id": 11,
+        "name": "Decoratives 2",
+        "price": 250,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Decoratives"
     },
     {
-        "name": "Decoratives 1",
-        "price": "50",
+        "id": 12,
+        "name": "Decoratives 3",
+        "price": 500,
         "description": "Muy buena sabana con muchos colores, destacada por su gran cantidad de hilos",
         "category": "Decoratives"
     }
