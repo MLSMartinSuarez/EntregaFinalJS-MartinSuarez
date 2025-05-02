@@ -150,30 +150,71 @@ function addTocart(id) {
   console.log(cart);
 }
 
+
 cartBtn.addEventListener('click', () => {
   if (!cart.length) {
     alert('cart is empty!');
     return;
   }
+  renderCart();
+  })
 
-  mainSelect.className = 'main';
-  mainSelect.innerHTML = `
-    <div class="cart-container">
-      <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button>
-    </div>
-  `;
-
-  const cartContainer = document.querySelector('.cart-container');
-  cart.forEach(product => {
-    cartContainer.innerHTML += `
-      <div class="cart-item">
-        <img src="./img/product-test.png" alt="Product">
-        <div class="item-details">
-          <div class="item-name">${product.name}</div>
-          <div class="item-price">$${product.price * product.quantity}</div>
-          <div class="item-quantity">Quantity: ${product.quantity}</div>
-        </div>
+  function renderCart() {
+    mainSelect.className = 'main';
+    mainSelect.innerHTML = `
+    <div class="cartLayout">
+      <div class="cart-container">
+        
+      
       </div>
+      <button>Finalizar Compra</button>
+    </div>
     `;
-  });
-});
+  
+    const cartContainer = document.querySelector('.cart-container');
+  
+    cart.forEach((product, index) => {
+  
+      const item = document.createElement('div');
+      item.className = 'cart-item';
+  
+      item.innerHTML += `
+       
+          <div>
+            <img src="./img/product-test.png" alt="Product">
+            <div class="item-details">
+              <div class="item-name">${product.name}</div>
+              <div class="item-price">$${product.price * product.quantity}</div>
+              <div class="item-quantity">Quantity: <button class='add-btn'> + </button>${product.quantity}<button class= 'rest-btn'> -</button></div>
+            </div>
+          </div>
+          <div >
+             <button class='eliminate-btn'>Eliminate</button>
+          </div>
+      `;
+  
+      item.querySelector('.add-btn').addEventListener('click', () => {
+        product.quantity++;
+        renderCart(); 
+      });
+  
+      
+      item.querySelector('.rest-btn').addEventListener('click', () => {
+        if (product.quantity <= 1) return
+        product.quantity--;
+        renderCart();
+      });
+  
+      item.querySelector('.eliminate-btn').addEventListener('click', () => {
+          cart.splice(index, 1);
+          renderCart();
+      });
+  
+      cartContainer.appendChild(item);
+  
+    });
+  }
+
+
+
+/* <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button> */
