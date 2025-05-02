@@ -143,13 +143,19 @@ a{
     color: white;
     margin-left: 80px;
     margin-right: 80px;
+    margin-top: 150px;
+}
+
+.cardDisplay {
+    display: flex;
+    justify-content: space-between;
 }
 
 
 /*  CARDs  */
 
 
-.cardBed, .cardBath, .cardKitchen, .cardDeco, .cardbed{
+.cardBed, .cardBathroom, .cardKitchen, .cardDecorative {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 0px;
@@ -228,11 +234,11 @@ a{
 
 /* CART  */
 
-.main {
+/* .main {
     display: grid;
     grid-template-rows: 1fr;
     justify-items: center;
- }
+ } */
 
 .cart-container {
     

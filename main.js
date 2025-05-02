@@ -5,348 +5,175 @@ const displayCategoryMenu = document.querySelector('#displayCategoryMenu');
 const categoryBtn = document.querySelector('#categoryBtn');
 const allProductsBtn = document.querySelector('#allProductsBtn');
 
-const displayKitchenProducts = document.querySelector('#displayKitchenProducts');
-const displayDecorativesProducts = document.querySelector('#displayDecorativesProducts');
-const displayBedroomProducts = document.querySelector('#displayBedroomProducts');
-const displayBathroomProducts = document.querySelector('#displayBathroomProducts');
-
 const cartBtn = document.querySelector('#cartBtn');
-const mainSelect = document.querySelector('.mainSelect')
-
+const mainSelect = document.querySelector('.mainSelect');
 
 let cart = [];
 let productJSON = [];
 
 function fetchAndStoreData() {
   fetch('products.json')
-      .then ( response => response.json())
-      .then ( data => {
-          displayProducts(data);
-          productJSON = data;
-          console.log(productJSON);
-          mainPage(data);
-      })
+    .then(response => response.json())
+    .then(data => {
+      productJSON = data;
+      mainPage(data);
+    });
 }
 
-fetchAndStoreData()
-
+fetchAndStoreData();
 
 allProductsBtn.addEventListener('click', () => {
-
-  if (productsLayouts.className === 'productsCategoryLayout'){
-
-      productsLayouts.innerHTML = '';
-      productsLayouts.className = 'productsLayouts';
-      productsLayouts.innerHTML = 
-      `
+  if (!mainSelect.classList.contains('main')) {
+    return
+  } else {
+    mainSelect.innerHTML = `
+    <h2 style="color: white; text-align: center; font-size: 40px; margin: 50px 0px;">All products at an unbelievable price</h2>
+    <section class="productsLayouts">
       <div class="bed">
-                <h3 class="productCategory">Bedroom</h3>
-                <div class="cardBed">
-                   
-                </div>
-            </div>
-            <div class="kitchen">
-                <h3 class="productCategory">Kitchen</h3>
-                <div class="cardKitchen">
-                    
-                </div>
-            </div>
-            <div class="bathroom">
-                <h3 class="productCategory">Bathroom</h3>
-                <div class="cardBath">
-                    
-                </div>
-            </div>
-            <div class="decorative">
-                <h3 class="productCategory">Decorative</h3>
-                <div class="cardDeco">
-                    
-                    </div>
-                </div>
-            </div>
-      `;
+        <h3 class="productCategory">Bedroom</h3>
+        <div class="cardBed"></div>
+      </div>
+      <div class="kitchen">
+        <h3 class="productCategory">Kitchen</h3>
+        <div class="cardKitchen"></div>
+      </div>
+      <div class="bathroom">
+        <h3 class="productCategory">Bathroom</h3>
+        <div class="cardBathroom"></div>
+      </div>
+      <div class="decorative">
+        <h3 class="productCategory">Decorative</h3>
+        <div class="cardDecorative"></div>
+      </div>
+    </section>
+  `;
 
-     mainPage(productJSON);
- }
-      
-})
+  mainSelect.className = 'main';
+  mainPage(productJSON);
+  } 
+  }) 
 
-function mainPage (data) {
+ 
+function mainPage(data) {
+  
+  const bedroom = document.querySelector('.cardBed');
+  const kitchen = document.querySelector('.cardKitchen');
+  const bathroom = document.querySelector('.cardBathroom');
+  const decorative = document.querySelector('.cardDecorative');
 
-      const bedroom = document.querySelector('.cardBed');
-      const kitchen = document.querySelector('.cardKitchen');
-      const bathroom = document.querySelector('.cardBath');
-      const decorative = document.querySelector('.cardDeco');
+  displayProducts(bedroom, data, 'Bedroom');
+  displayProducts(kitchen, data, 'Kitchen');
+  displayProducts(bathroom, data, 'Bathroom');
+  displayProducts(decorative, data, 'Decoratives');
+}
 
-      const bedroomItems = data.filter(item => item.category === "Bedroom");
-      console.log(bedroomItems);
-      bedroomItems.forEach( prod => {
-      bedroom.innerHTML += 
-      `
-              
-              <div class="card">
-                  <img src="./img/product-test.png" alt="Product Image" />
-                  <div class="card-content">
-                    <div class="card-title">${prod.name}</div>
-                    <div class="card-description">${prod.description}</div>
-                    <div class="price">$${prod.price}</div>
-                    <button class="btn" onclick="addTocart(${prod.id})">Add to Cart</button>
-                  </div>
-              </div>
-      ` ;
-  })
-  const kitchenItems = data.filter(item => item.category ===  'Kitchen')
-  kitchenItems.forEach( prod => {
-      kitchen.innerHTML += 
-  `
-          
-          <div class="card">
-              <img src="./img/product-test.png" alt="Product Image" />
-              <div class="card-content">
-                <div class="card-title">${prod.name}</div>
-                <div class="card-description">${prod.description}</div>
-                <div class="price">$${prod.price}</div>
-                <button class="btn" onclick="addTocart(${prod.id})">Add to Cart</button>
-              </div>
-          </div>
-  `
-  })
-  const bathroomItems = data.filter(item => item.category ===  'Bathroom')
-  bathroomItems.forEach( prod => {
-      bathroom.innerHTML += 
-  `
-          
-          <div class="card">
-              <img src="./img/product-test.png" alt="Product Image" />
-              <div class="card-content">
-                <div class="card-title">${prod.name}</div>
-                <div class="card-description">${prod.description}</div>
-                <div class="price">$${prod.price}</div>
-                <button class="btn" onclick="addTocart(${prod.id})">Add to Cart</button>
-              </div>
-          </div>
-  `
-  })
-  const decoItems = data.filter(item => item.category ===  'Decoratives')
-  decoItems.forEach( prod => {
-      decorative.innerHTML += 
-  `
-         
-          <div class="card">
-              <img src="./img/product-test.png" alt="Product Image" />
-              <div class="card-content">
-                <div class="card-title">${prod.name}</div>
-                <div class="card-description">${prod.description}</div>
-                <div class="price">$${prod.price}</div>
-                <button class="btn" onclick="addTocart(${prod.id})">Add to Cart</button>
-              </div>
-          </div>
-  `
-  })
+function displayProducts(container, data, category) {
+  const items = data.filter(item => item.category === category);
+  items.forEach(prod => {
+    container.innerHTML += `
+      <div class="card">
+        <img src="./img/product-test.png" alt="Product Image" />
+        <div class="card-content">
+          <div class="card-title">${prod.name}</div>
+          <div class="card-description">${prod.description}</div>
+          <div class="price">$${prod.price}</div>
+          <button class="btn" onclick="addTocart(${prod.id})">Add to Cart</button>
+        </div>
+      </div>
+    `;
+  });
 }
 
 categoryBtn.addEventListener('click', () => {
-    if (displayCategoryMenu.innerHTML !== '') {
-        displayCategoryMenu.innerHTML = '';
-    } else {
-        displayCategoryMenu.innerHTML = 
-    `
-    <nav >
-        <ul class="categoryMenu">
-            <li><button id='displayBedroomProducts'>Bedroom</button></li>
-            <li><button id='displayKitchenProducts'>Kitchen</button></li>
-            <li><button id='displayBathroomProducts'>Bathroom</button></li>
-            <li><button id='displayDecorativesProducts'>Decoratives</button></li>
-        </ul>
+  displayCategoryMenu.innerHTML = displayCategoryMenu.innerHTML ? '' : `
+    <nav>
+      <ul class="categoryMenu">
+        <li><button id='displayBedroomProducts'>Bedroom</button></li>
+        <li><button id='displayKitchenProducts'>Kitchen</button></li>
+        <li><button id='displayBathroomProducts'>Bathroom</button></li>
+        <li><button id='displayDecorativesProducts'>Decoratives</button></li>
+      </ul>
     </nav>
-    `;
-    }
-    
-})
+  `;
+});
 
-function displayProducts (data) {
 document.body.addEventListener('click', (e) => {
-    if (e.target.matches('#displayBedroomProducts')) {
-      welcomingPage.innerHTML = '';
-      productsLayouts.className = 'productsCategoryLayout'
-      productsLayouts.innerHTML = 
-        `
-        <div class="productsBedroom">
-            <h3>Bedroom</h3>
-            <div class="cardbed">
+  const target = e.target;
 
-            </div>
-        `
-    const cardDisplay = document.querySelector('.cardbed');
+  if (!target.matches('#displayBedroomProducts, #displayKitchenProducts, #displayBathroomProducts, #displayDecorativesProducts')) return;
 
-      const bedroomProducts = data.filter(products => products.category === "Bedroom");
-      console.log(bedroomProducts);
-      bedroomProducts.forEach(product => {
-        cardDisplay.innerHTML += 
-        `
-                    <div class="card">
-                        <img src="./img/product-test.png" alt="Product Image" />
-                        <div class="card-content">
-                          <div class="card-title">${product.name}</div>
-                          <div class="card-description">${product.description}</div>
-                          <div class="price">$${product.price}</div>
-                          <button class="btn" onclick="addTocart(${product.id})">Add to Cart</button>
-                        </div>
-                    </div>
-                      
-        `;
-      });
-      
-    }
-    else if (e.target.matches('#displayKitchenProducts')) {
-        welcomingPage.innerHTML = '';
-      productsLayouts.className = 'productsCategoryLayout'
-      productsLayouts.innerHTML = 
-        `
-        <div class="productsKitchen">
-            <h3>Kitchen</h3>
-            <div class="cardbed">
+  welcomingPage.innerHTML = '';
+  mainSelect.innerHTML = '';
+  mainSelect.className = 'main';
 
-            </div>
-        `
-    const cardDisplay = document.querySelector('.cardbed');
+  const categoryMap = {
+    'displayBedroomProducts': 'Bedroom',
+    'displayKitchenProducts': 'Kitchen',
+    'displayBathroomProducts': 'Bathroom',
+    'displayDecorativesProducts': 'Decoratives'
+  };
 
-      const kitchenProducts = data.filter(products => products.category === "Kitchen");
-      console.log(kitchenProducts);
-      kitchenProducts.forEach(product => {
-        cardDisplay.innerHTML += 
-        `
-                    <div class="card">
-                        <img src="./img/product-test.png" alt="Product Image" />
-                        <div class="card-content">
-                          <div class="card-title">${product.name}</div>
-                          <div class="card-description">${product.description}</div>
-                          <div class="price">$${product.price}</div>
-                          <button class="btn" onclick="addTocart(${product.id})">Add to Cart</button>
-                        </div>
-                    </div>
-                      
-        `;
-      });
-    }
-    else if (e.target.matches('#displayBathroomProducts')) {
-        welcomingPage.innerHTML = '';
-      productsLayouts.className = 'productsCategoryLayout'
-      productsLayouts.innerHTML = 
-        `
-        <div class="productsBathroom">
-            <h3>Bathroom</h3>
-            <div class="cardbed">
+  const category = categoryMap[target.id];
+  mainSelect.innerHTML = `
+    <div class="productsCategoryLayout">
+      <h3>${category}</h3>
+      <div class="cardDisplay"></div>
+    </div>
+  `;
 
-            </div>
-        `
-    const cardDisplay = document.querySelector('.cardbed');
+  const cardDisplay = document.querySelector('.cardDisplay');
+  const filtered = productJSON.filter(product => product.category === category);
+  filtered.forEach(product => {
+    cardDisplay.innerHTML += `
+      <div class="card">
+        <img src="./img/product-test.png" alt="Product Image" />
+        <div class="card-content">
+          <div class="card-title">${product.name}</div>
+          <div class="card-description">${product.description}</div>
+          <div class="price">$${product.price}</div>
+          <button class="btn" onclick="addTocart(${product.id})">Add to Cart</button>
+        </div>
+      </div>
+    `;
+  });
+});
 
-      const bathroomProducts = data.filter(products => products.category === "Bathroom");
-      console.log(bathroomProducts);
-      bathroomProducts.forEach(product => {
-        cardDisplay.innerHTML += 
-        `
-                    <div class="card">
-                        <img src="./img/product-test.png" alt="Product Image" />
-                        <div class="card-content">
-                          <div class="card-title">${product.name}</div>
-                          <div class="card-description">${product.description}</div>
-                          <div class="price">$${product.price}</div>
-                          <button class="btn" onclick="addTocart(${product.id})">Add to Cart</button>
-                        </div>
-                    </div>
-                      
-        `;
-      });
-    }
-    else if (e.target.matches('#displayDecorativesProducts')) {
-        welcomingPage.innerHTML = '';
-        productsLayouts.className = 'productsCategoryLayout'
-        productsLayouts.innerHTML = 
-          `
-          <div class="productsDecoratives">
-              <h3>Decoratives</h3>
-              <div class="cardbed">
-  
-              </div>
-          `
-      const cardDisplay = document.querySelector('.cardbed');
-  
-        const decorativesProducts = data.filter(products => products.category === "Decoratives");
-        console.log(decorativesProducts);
-        decorativesProducts.forEach(product => {
-          cardDisplay.innerHTML += 
-          `
-                      <div class="card">
-                          <img src="./img/product-test.png" alt="Product Image" />
-                          <div class="card-content">
-                            <div class="card-title">${product.name}</div>
-                            <div class="card-description">${product.description}</div>
-                            <div class="price">$${product.price}</div>
-                            <button class="btn" onclick="addTocart(${product.id})">Add to Cart</button>
-                          </div>
-                      </div>
-                        
-          `;
-        });
-    
-}});
+function addTocart(id) {
+  const product = productJSON.find(prod => prod.id === id);
+  const exist = cart.find(item => item.id === id);
+
+  if (exist) {
+    exist.quantity++;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+  console.log(cart);
 }
 
-function addTocart (id) {
-
-            const idProduct = productJSON.find(prod => prod.id === id);
-            const existInCart = cart.find(item => item.id === id);
-            if (existInCart) {
-              existInCart.quantity++;
-            } else {
-              cart.push({...idProduct , quantity: 1});
-            }
-            console.log(cart);
-    }
-
 cartBtn.addEventListener('click', () => {
-  
-    if (cart.length === 0) {
-
-    alert('cart is empty!')
-
-  } else {
-
-    mainSelect.className = 'main'
-
-    const main = document.querySelector('.main');
-
-    main.innerHTML = 
-    `
-    <div class="cart-container">
-                
-
-      <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button>
-
-    </div> 
-    `;
-    console.log(cart);
-    cart.forEach ( product => {
-
-      const cartContainer = document.querySelector('.cart-container');
-
-      cartContainer.innerHTML += 
-      `
-        <div class="cart-item">
-            <img src="./img/product-test.png" alt="Product">
-            <div class="item-details">
-                <div class="item-name">${product.name}</div>
-                <div class="item-price">$${product.price * product.quantity}</div>
-                <div class="item-price">${product.quantity}</div>
-            </div>
-        </div>
-      `;
-      })
+  if (!cart.length) {
+    alert('cart is empty!');
+    return;
   }
-  
-  
-})
-    
 
+  mainSelect.className = 'main';
+  mainSelect.innerHTML = `
+    <div class="cart-container">
+      <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button>
+    </div>
+  `;
+
+  const cartContainer = document.querySelector('.cart-container');
+  cart.forEach(product => {
+    cartContainer.innerHTML += `
+      <div class="cart-item">
+        <img src="./img/product-test.png" alt="Product">
+        <div class="item-details">
+          <div class="item-name">${product.name}</div>
+          <div class="item-price">$${product.price * product.quantity}</div>
+          <div class="item-quantity">Quantity: ${product.quantity}</div>
+        </div>
+      </div>
+    `;
+  });
+});
