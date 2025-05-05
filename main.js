@@ -156,65 +156,96 @@ cartBtn.addEventListener('click', () => {
     alert('cart is empty!');
     return;
   }
-  renderCart();
+  displayCart();
   })
 
-  function renderCart() {
+  function displayCart() {
     mainSelect.className = 'main';
     mainSelect.innerHTML = `
     <div class="cartLayout">
       <div class="cart-container">
         
       
-      </div>
-      <button>Finalizar Compra</button>
+      <div class = 'checkoutBtnDisplayTotal'>
+       
     </div>
     `;
-  
+    // ${cartTotalPrice}
     const cartContainer = document.querySelector('.cart-container');
+
+    let cartTotal = 0
   
     cart.forEach((product, index) => {
-  
+      
+      cartTotal += product.price * product.quantity;
       const item = document.createElement('div');
       item.className = 'cart-item';
-  
+      
+      
       item.innerHTML += `
        
-          <div>
+          <div class='item-details-display'>
             <img src="./img/product-test.png" alt="Product">
-            <div class="item-details">
-              <div class="item-name">${product.name}</div>
-              <div class="item-price">$${product.price * product.quantity}</div>
-              <div class="item-quantity">Quantity: <button class='add-btn'> + </button>${product.quantity}<button class= 'rest-btn'> -</button></div>
-            </div>
+              <div class="item-details">
+                <div class="item-name">
+                ${product.name}
+                </div>
+                <div class="item-quantity">
+                Quantity: <button class='add-btn'> + </button>${product.quantity}<button class= 'rest-btn'> -</button>
+                </div>
+              </div>
           </div>
-          <div >
+          <div class="item-price">
+                $${product.price * product.quantity}
+          </div>
+          <div>
              <button class='eliminate-btn'>Eliminate</button>
           </div>
       `;
-  
+
+
       item.querySelector('.add-btn').addEventListener('click', () => {
         product.quantity++;
-        renderCart(); 
+        displayCart(); 
       });
   
       
       item.querySelector('.rest-btn').addEventListener('click', () => {
         if (product.quantity <= 1) return
         product.quantity--;
-        renderCart();
+        displayCart();
       });
   
       item.querySelector('.eliminate-btn').addEventListener('click', () => {
           cart.splice(index, 1);
-          renderCart();
+          displayCart();
       });
   
       cartContainer.appendChild(item);
   
     });
+
+    console.log(cartTotal);
+
+    const checkoutBtnDisplayTotal = document.querySelector('.checkoutBtnDisplayTotal');
+    checkoutBtnDisplayTotal.innerHTML = 
+    `
+      <button class='checkoutBtn'>Finalizar Compra - total : $${cartTotal}</button>
+    `
+
+    checkoutBtnDisplayTotal.addEventListener('click', function () {
+      alert(
+        `
+          Felicidades por tu compra!
+        `)
+      cartContainer.innerHTML = 
+      `
+      <p class='emptyCartMenssage'>Tu carrito esta vacio!</p>
+      `;
+      cart = [];
+    });
   }
 
 
 
-/* <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button> */
+// <button class='checkoutBtn'>Finalizar Compra - total:${cartTotal}</button>
