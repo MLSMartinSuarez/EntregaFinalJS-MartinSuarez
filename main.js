@@ -8,8 +8,9 @@ const allProductsBtn = document.querySelector('#allProductsBtn');
 const cartBtn = document.querySelector('#cartBtn');
 const mainSelect = document.querySelector('.mainSelect');
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let productJSON = [];
+let cartStorage = JSON.stringify(cart)
 
 function fetchAndStoreData() {
   fetch('products.json')
@@ -138,6 +139,10 @@ document.body.addEventListener('click', (e) => {
   });
 });
 
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
 function addTocart(id) {
   const product = productJSON.find(prod => prod.id === id);
   const exist = cart.find(item => item.id === id);
@@ -170,7 +175,6 @@ cartBtn.addEventListener('click', () => {
        
     </div>
     `;
-    // ${cartTotalPrice}
     const cartContainer = document.querySelector('.cart-container');
 
     let cartTotal = 0
@@ -202,10 +206,12 @@ cartBtn.addEventListener('click', () => {
              <button class='eliminate-btn'>Eliminate</button>
           </div>
       `;
+      saveCart();
 
 
       item.querySelector('.add-btn').addEventListener('click', () => {
         product.quantity++;
+        saveCart();
         displayCart(); 
       });
   
@@ -213,15 +219,19 @@ cartBtn.addEventListener('click', () => {
       item.querySelector('.rest-btn').addEventListener('click', () => {
         if (product.quantity <= 1) return
         product.quantity--;
+        saveCart();
         displayCart();
       });
   
       item.querySelector('.eliminate-btn').addEventListener('click', () => {
           cart.splice(index, 1);
+          saveCart();
           displayCart();
       });
   
       cartContainer.appendChild(item);
+      
+    
   
     });
 
@@ -243,9 +253,6 @@ cartBtn.addEventListener('click', () => {
       <p class='emptyCartMenssage'>Tu carrito esta vacio!</p>
       `;
       cart = [];
+      saveCart();
     });
   }
-
-
-
-// <button class='checkoutBtn'>Finalizar Compra - total:${cartTotal}</button>
